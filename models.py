@@ -57,9 +57,9 @@ class Bout(Base):
     __tablename__ = 'bout'
     id = Column(Integer, primary_key=True)
     fighter1_id = Column(Integer, ForeignKey('fighter.id'))
-    fighter1 = relationship(Fighter)
+    fighter1 = relationship(Fighter, foreign_keys=[fighter1_id])
     fighter2_id = Column(Integer, ForeignKey('fighter.id'))
-    fighter2 = relationship(Fighter)
+    fighter2 = relationship(Fighter, foreign_keys=[fighter2_id])
     announced_at = Column(DateTime)
     held_at = Column(DateTime)
     score = Column(Integer)
