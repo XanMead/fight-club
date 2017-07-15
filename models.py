@@ -1,3 +1,7 @@
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+
 from datetime import datetime
 from random_words import RandomNicknames
 from random import randint, choices
@@ -6,7 +10,20 @@ from util import roll
 
 rn = RandomNicknames()
 
-class Fighter(object):
+Base = declarative_base()
+
+class Fighter(Base):
+    __tablename__ = 'fighter'
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String(50))
+    last_name = Column(String(50))
+    stre = Column(Integer)
+    con = Column(Integer)
+    dex = Column(Integer)
+    int = Column(Integer)
+    wis = Column(Integer)
+    cha = Column(Integer)
+
     def __init__(self):
         self.first_name = rn.random_nick()
         self.last_name = rn.random_nick()
@@ -36,7 +53,16 @@ class Fighter(object):
     def __repr__(self):
         return "%s %s %d/%d/%d/%d/%d/%d" % (self.first_name, self.last_name, self.stre, self.con, self.dex, self.int, self.wis, self.cha)
 
-class Bout(object):
+class Bout(Base):
+    __tablename__ = 'bout'
+    id = Column(Integer, primary_key=True)
+    fighter1_id = Column(Integer, ForeignKey('fighter.id'))
+    fighter1 = relationship(Fighter)
+    fighter2_id = Column(Integer, ForeignKey('fighter.id'))
+    fighter2 = relationship(Fighter)
+    announced_at = Column(DateTime)
+    held_at = Column(DateTime)
+    score = Column(Integer)
     def __init__(self, fighter1, fighter2):
         self.fighter1 = fighter1
         self.fighter2 = fighter2
