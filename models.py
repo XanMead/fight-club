@@ -47,6 +47,9 @@ class Fighter(Base):
         effort.append(roll('1d20') + self.mod(self.cha))
         return effort
 
+    def all_bouts(self):
+        return self.bouts_a + self.bouts_d
+
     def __str__(self):
         return "%s %s" % (self.first_name, self.last_name)
 
@@ -57,9 +60,9 @@ class Bout(Base):
     __tablename__ = 'bout'
     id = Column(Integer, primary_key=True)
     fighter1_id = Column(Integer, ForeignKey('fighter.id'))
-    fighter1 = relationship(Fighter, foreign_keys=[fighter1_id])
+    fighter1 = relationship(Fighter, foreign_keys=[fighter1_id], backref='bouts_a')
     fighter2_id = Column(Integer, ForeignKey('fighter.id'))
-    fighter2 = relationship(Fighter, foreign_keys=[fighter2_id])
+    fighter2 = relationship(Fighter, foreign_keys=[fighter2_id], backref='bouts_d')
     announced_at = Column(DateTime)
     held_at = Column(DateTime)
     score = Column(Integer)
